@@ -6,30 +6,37 @@
 #include <string.h>
 #include <cairo.h>
 
-int CairoSquare(double p1x, double p1y, double p2x, double p2y, double p3x, double p3y, double p4x, double p4y){
+cairo_t * CairoSquare(double p1x, double p1y, double p2x, double p2y, double p3x, double p3y, double p4x, double p4y, cairo_t *cr, cairo_surface_t * surface){
 	
-	cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 512, 512 );
-	cairo_t *cr  = cairo_create (surface);
 	
-	cairo_set_source_rgb (cr, 1, 1, 1);		// white
-	cairo_rectangle (cr, 256, 256, 511, 511);
-	cairo_fill (cr);
+	printf("\n------");
+	printf("\np1x: %f", p1x);
+	printf("\np1y: %f", p1y);
+	printf("\np2x: %f", p2x);
+	printf("\np2y: %f", p2y);
+	printf("\np3x: %f", p3x);
+	printf("\np3y: %f", p3y);
+	printf("\np4x: %f", p4x);
+	printf("\np4y: %f", p4y);
+	
 
-	cairo_move_to (cr, 256, 256);
-	cairo_rel_line_to (cr, 256, 0);
-	cairo_rel_line_to (cr, 0, 256);
-	cairo_rel_line_to (cr, -256, 0);
-	cairo_close_path (cr);
+	cairo_set_source_rgb (cr, 1, 0, 0);		// green
+	cairo_move_to (cr, p1x, p1y);			// top left corner
+	cairo_line_to (cr, p2x, p2y);			// middle of the image
+	cairo_move_to (cr, p2x, p2y);
+	cairo_line_to (cr, p3x, p3y );
+	cairo_move_to (cr, p3x, p3y);			// top left corner
+	cairo_line_to (cr, p4x, p4y);			// middle of the image
+	cairo_move_to (cr, p4x, p4y);
+	cairo_line_to (cr, p1x, p1y );
+	cairo_set_line_width (cr, 1.0);
+	cairo_stroke (cr);
 
-	cairo_set_source_rgb (cr, 1, 0, 0);		// red
-	cairo_set_line_width (cr, 5.5);
-	cairo_stroke(cr);
+
 	
 	
-	cairo_destroy (cr);
-	cairo_surface_write_to_png (surface, "square.png");
-	cairo_surface_destroy (surface);
-	return 0;
+	
+	return cr;
 	
 }
 
@@ -67,10 +74,16 @@ double * ComputeNextCorners(double p1x, double p1y, double p2x, double p2y, doub
 
 //	return: array with updated corners 
 	
+	
+	if (p1x >= p2x){
+		frac = -frac;
+		
+		
+	}
 
 //	compute height and width of each line by calling ComputeHW
 	double p1x_next = p1x + frac * ComputeHW(p1x, p1y, p2x, p2y)[1];
-	printf("\n\n%f\n\n", frac);
+
 	double p1y_next = p1y - frac * ComputeHW(p1x, p1y, p2x, p2y)[0];
 	
 	double p2x_next = p2x - frac * ComputeHW(p2x, p2y, p3x, p3y)[1];
@@ -104,7 +117,7 @@ double * ParseInput(){
 	
 	
 	
-	printf("2test11");
+
 	double * parsed_input = malloc(8);
 	char * input = NULL;
 	size_t len = 0;
@@ -117,7 +130,7 @@ double * ParseInput(){
 	
 	int index = 0;
 	char * p;
-	printf("test11");
+	
 	while (token != NULL) {
 		parsed_input[index] = strtod(token, &p);
 		index = index + 1;
@@ -136,7 +149,7 @@ double * ParseInput(){
 }
 	
 int DrawSquare(double p1x, double p1y, double p2x, double p2y, double p3x, double p3y,
-			double p4x, double p4y, int dimx, int dimy, int rc_left, double frac){ 
+			double p4x, double p4y, int dimx, int dimy, int rc_left, double frac, cairo_t *cr, cairo_surface_t * surface){ 
 //Function DrawSquare
 //	params
 //		double p1x: x coord of corner 1
@@ -159,25 +172,26 @@ int DrawSquare(double p1x, double p1y, double p2x, double p2y, double p3x, doubl
 
 //	check if rec_left == 0
 	if (rc_left == 0){
+		cairo_destroy (cr);
+		cairo_surface_write_to_png (surface, "square.png");
+		cairo_surface_destroy (surface);
 		return 0;
 	}else{
-
+	CairoSquare(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, cr, surface);
 				
 //	call GraphicsDraw with current corners 
 //	get next corners by calling ComputeNextCorners
 	double * next_corners = ComputeNextCorners(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, frac);
-	printf("\n\n Next Corners");
-	for(int i = 0; i < 8; i++) {
-		
-        printf("\n%.2f",next_corners[i]);
-    }
+	
+
+	
 	
 // 	decrement rc_left
 
 	rc_left = rc_left - 1;
 //   recursively call with updated corners 
 	return DrawSquare(next_corners[0], next_corners[1], next_corners[2], next_corners[3], next_corners[4], next_corners[5],
-			next_corners[6], next_corners[7], dimx, dimy, rc_left, frac);
+			next_corners[6], next_corners[7], dimx, dimy, rc_left, frac, cr, surface);
 	}
 
 }	
@@ -189,7 +203,7 @@ int DrawSquare(double p1x, double p1y, double p2x, double p2y, double p3x, doubl
 int main() {
 
 
-CairoSquare(1,1,1,1,1,1,1,1);
+
 
 
 
@@ -208,15 +222,18 @@ int rc_left = input_data[2];
 int dimx = input_data[0];
 int dimy = input_data[1];
 
-double wx = -(p2y - p1y);
-double wy = -(p2x - p1x);
+double wx = abs(p2y - p1y);
+double wy = abs(p2x - p1x);
+printf("%f, %f", wx, wy);
 double p3x = p2x - wx;
-double p3y = p2y + wy;
-double p4x = p3x - wx;
-double p4y = p3y - wy;
-printf("test");
+double p3y = p2y - wy;
+double p4x = p3x - wy;
+double p4y = p3y - wx;
+
 printf("\n Current Corners: p1: %.2f,%.2f | p2: %.2f,%.2f | p3: %.2f,%.2f | p4: %.2f,%.2f |\n\n", p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y);
-DrawSquare(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, dimx, dimy, rc_left, frac);
+cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 512, 512 );
+cairo_t *cr  = cairo_create (surface);
+DrawSquare(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, dimx, dimy, rc_left, frac, cr, surface);
 
 //call DrawSquare
 
