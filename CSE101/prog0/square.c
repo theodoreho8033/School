@@ -22,11 +22,17 @@ cairo_t * CairoSquare(double p1x, double p1y, double p2x, double p2y, double p3x
 
 	cairo_set_source_rgb (cr, 1, 0, 0);		// green
 	cairo_move_to (cr, p1x, p1y);			// top left corner
-	cairo_line_to (cr, p2x, p2y);			// middle of the image
+	cairo_line_to (cr, p2x, p2y);
+	//cairo_stroke (cr);
+	cairo_set_source_rgb (cr, 0, 1, 0);	// middle of the image
 	cairo_move_to (cr, p2x, p2y);
 	cairo_line_to (cr, p3x, p3y );
+	//cairo_stroke (cr);
+	cairo_set_source_rgb (cr, 0, 0, 1);
 	cairo_move_to (cr, p3x, p3y);			// top left corner
-	cairo_line_to (cr, p4x, p4y);			// middle of the image
+	cairo_line_to (cr, p4x, p4y);
+	//cairo_stroke (cr);
+	cairo_set_source_rgb (cr, 0, 0, 1);	// middle of the image
 	cairo_move_to (cr, p4x, p4y);
 	cairo_line_to (cr, p1x, p1y );
 	cairo_set_line_width (cr, 1.0);
@@ -76,9 +82,32 @@ double * ComputeNextCorners(double p1x, double p1y, double p2x, double p2y, doub
 	
 	
 	if (p1x >= p2x){
+		double keep1x = p1x;
+		double keep1y = p1y;
+		
+		double keep2x = p2x;
+		double keep2y = p2y;
+		
+		double keep3x = p3x;
+		double keep3y = p3y;
+		
+		double keep4x = p4x;
+		double keep4y = p4y;
+		
+		p1x = keep4x;
+		p2x = keep1x;
+		p3x = keep2x;
+		p4x = keep3x; 
+		
+		p1y = keep4y; 
+		p2y = keep1y; 
+		p3y = keep2y; 
+		p4y = keep3y;
+		
+		
+	}
+	if (p1x >= 91919191919){
 		frac = -frac;
-		
-		
 	}
 
 //	compute height and width of each line by calling ComputeHW
@@ -222,16 +251,16 @@ int rc_left = input_data[2];
 int dimx = input_data[0];
 int dimy = input_data[1];
 
-double wx = abs(p2y - p1y);
-double wy = abs(p2x - p1x);
+double wy = abs(p2y - p1y);
+double wx = abs(p2x - p1x);
 printf("%f, %f", wx, wy);
-double p3x = p2x - wx;
-double p3y = p2y - wy;
-double p4x = p3x - wy;
-double p4y = p3y - wx;
+double p3x = p2x - wy;
+double p3y = p2y - wx;
+double p4x = p1x - wy;
+double p4y = p1y - wx;
 
 printf("\n Current Corners: p1: %.2f,%.2f | p2: %.2f,%.2f | p3: %.2f,%.2f | p4: %.2f,%.2f |\n\n", p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y);
-cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 512, 512 );
+cairo_surface_t *surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, dimx, dimy );
 cairo_t *cr  = cairo_create (surface);
 DrawSquare(p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, dimx, dimy, rc_left, frac, cr, surface);
 
