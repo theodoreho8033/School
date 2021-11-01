@@ -1,4 +1,7 @@
-CSE 101 Lab Fall 2021, Theodore Ho  
+UCSC CSE 101 Lab Fall 2021, Theodore Ho  
+
+All .c files were entirely coded by Theodore Ho
+All .h files and program specs were authored by UCSC CSE101 Fall 2021 Staff 
 
 LINKED LIST AGENDA MANAGER
 
