@@ -69,7 +69,7 @@ addi $sp, $sp, 36
 originAddress: .word 0xFFFF0000
 
 .text
-j done  #<not sure why this is here but was part of asm file 
+j done  
     
     done: nop
     li $v0 10 
