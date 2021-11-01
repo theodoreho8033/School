@@ -1,0 +1,14 @@
+ADD "Agenda" "Introduction talk" 9
+ADD "Agenda" "Session 1" 12
+ADD "Agenda" "Session 2" 11
+SWAP "Agenda" "Session 1" "Session 2"
+ADD "Agenda" "Session 3" 14
+ADD "Other events" "Coffee socialising" 10
+ADD "Other events" "Coffee socialising" 10
+ADD "Other events" "Break" 13
+ADD "Other events" "Dinner"  15
+MERGE "Agenda" "events"
+MERGE "Agenda" "Other events"
+DEL "Agenda" "Dinner"
+ADD "Agenda" "End of workshop" 15
+PRINT "Agenda"

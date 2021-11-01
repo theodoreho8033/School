@@ -1,0 +1,9 @@
+ADD "Agenda1" "Thing1" 23
+ADD "Agenda1" "Thing2" 22
+ADD "Agenda1" "Thing3" 21
+ADD "Agenda1" "Thing4" 20
+ADD "Agenda1" "Thing5" 19
+ADD "Agenda1" "Thing6" 18
+PRINT "Agenda1"
+SWAP "Agenda1" "Thing2" "Thing5"
+PRINT "Agenda1" 

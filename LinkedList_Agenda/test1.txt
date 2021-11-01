@@ -1,0 +1,50 @@
+ADD "Agenda1" "Thing1" 23
+ADD "Agenda1" "Thing2" 22
+ADD "Agenda1" "Thing3" 21
+ADD "Agenda2" "Thing4" 20
+ADD "Agenda2" "Thing5" 19
+ADD "Agenda2" "Thing6" 18
+MERGE "Agenda1" "Agenda2" 
+PRINT "Agenda1" 
+ADD "Agenda 3" "thing7" 17
+ADD "Agenda 3" "thing 8" 16
+ADD "Agenda 3" "thing 9" 15
+PRINT "Agenda 3" 
+MERGE "Agenda 3" "Agenda1" 
+PRINT "Agenda 3" 
+SWAP "Agenda 3" "Thing2" "Thing6"
+PRINT "Agenda 3"
+DEL "Agenda 3" "Thing2"
+DEL "Agenda 3" "Thing6"
+PRINT "Agenda 3"  
+ADD "Agenda 3" "Thing2" 22
+ADD "Agenda 3" "Thing6" 18
+PRINT "Agenda 3" 
+ADD "Agenda1" "Thing1" 23
+ADD "Agenda1" "Thing2" 22
+ADD "Agenda1" "Thing3" 21
+ADD "Agenda2" "Thing4" 20
+PRINT "Agenda1" 
+MERGE "Agenda1" "Agenda 3" 
+PRINT "Agenda 3" 
+DEL "Agenda1" "Thing1"
+DEL "Agenda1" "Thing2" 
+DEL "Agenda1" "Thing3"
+PRINT "Agenda1" 
+MERGE "Agenda1" "Agenda 3" 
+PRINT "Agenda1" 
+SWAP "Agenda1" "Thing1" "thing 9"
+SWAP "Agenda1" "thing 8" "Thing2" 
+PRINT "Agenda1" 
+SWAP "Agenda1" "Thing1" "thing 9"
+SWAP "Agenda1" "thing 8" "Thing2"
+PRINT "Agenda1" 
+DEL "Agenda1" "thing 9" 
+PRINT "Agenda1"
+ADD "Agenda 2" "thing 9" 15 
+ADD "Agenda 2" "thing 10" 14
+ADD "Agenda 2" "thing 11" 13
+PRINT "Agenda 2" 
+MERGE "Agenda1" "Agenda 2"
+PRINT "Agenda1"
+DEL "Agenda1" "afds" 
